@@ -14,7 +14,7 @@ parser = ag.ArgumentParser(description='GSA and Variant calling')
 parser.add_argument('Input',help='Input sequence(s)', type = str, nargs="+")
 parser.add_argument('Outdir', help='Output directory (deafault = current directory)',type=str,default='.')
 parser.add_argument('-v', '--verbose',help="increase output verbosity", action="store_true")
-parser.add_argument('Ref', help= 'Reference sequence', type = 'str')
+parser.add_argument('Ref', help= 'Reference sequence', type = str)
 args = parser.parse_args()
 input_sequences = args.Input
 output = args.Outdir
