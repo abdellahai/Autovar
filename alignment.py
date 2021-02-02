@@ -27,4 +27,8 @@ copyfile(ref,f'{output}/ref/ref.fasta')
 ref = f'{output}/ref/ref.fasta'
 cmd = BwaIndexCommandline (infile=ref)
 cmd()
+for i in input_sequences:
+    cmd = BwaMemCommandline(reference = ref,read_file1= i)
+    output = os.path.splitext(os.path.basename(i))[0]
+    cmd(stdout=output)
 
