@@ -1,5 +1,5 @@
 import argparse as ag
-from Bio.Sequencing.Applications import BwaIndexCommandline, BwaMemCommandline, SamtoolsCalmdCommandline, SamtoolsMpileupCommandline, SamtoolsSortCommandline, SamtoolsViewCommandline
+from Bio.Sequencing.Applications import BwaIndexCommandline, BwaMemCommandline, SamtoolsCalmdCommandline, SamtoolsMpileupCommandline,SamtoolsFixmateCommandline, SamtoolsSortCommandline, SamtoolsViewCommandline
 import pandas as pd
 import pandas_genomics
 import scipy as sp
@@ -20,8 +20,8 @@ input_sequences = args.Input
 output = args.Outdir
 ref = args.Ref
 os.mkdir(f'{output}/ref')
-os.mkdir(f'{output}/raw_sams')
-os.mkdir(f'{output}/sorted_sams')
+os.mkdir(f'{output}/sams')
+os.mkdir(f'{output}/sorted_bams')
 os.mkdir(f'{output}/bams')
 copyfile(ref,f'{output}/ref/ref.fasta')
 ref = f'{output}/ref/ref.fasta'
@@ -29,6 +29,11 @@ cmd = BwaIndexCommandline (infile=ref)
 cmd()
 for i in input_sequences:
     cmd = BwaMemCommandline(reference = ref,read_file1= i)
-    output = os.path.splitext(os.path.basename(i))[0]
-    cmd(stdout=output)
+    outname = os.path.splitext(os.path.basename(i))[0]
+    cmd(stdout=f'{output}/sams/{outname}.sam')
+    cmd = SamtoolsFixmateCommandline(
+        input_file=f'{output}/sams/{outname}.sam',
+        output_file=f'{output}/bams/{outname}.bam')
+    cmd()
+    
 
