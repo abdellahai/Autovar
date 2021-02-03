@@ -35,5 +35,7 @@ for i in input_sequences:
         input_file=f'{output}/sams/{outname}.sam',
         output_file=f'{output}/bams/{outname}.bam')
     cmd()
-    
+    cmd = SamtoolsSortCommandline(input=f'{output}/bams/{outname}.bam',out_prefix=f'{output}/sorted_bam/{outname}')
+    cmd()
+    cmd = SamtoolsMpileupCommandline(input_file=f'{output}/sorted_bam/{outname}.bam', B=True, A=True, I=True, C=50, f=ref)
 
